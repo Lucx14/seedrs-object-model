@@ -1,7 +1,7 @@
 require_relative './investment'
 # Campaign class
 class Campaign
-  attr_reader :total
+  attr_reader :total, :investments
 
   def initialize(campaign_name, campaign_image, target_amount, sector, country, investment_multiple, investment = Investment)
     @campaign_name = campaign_name
@@ -17,6 +17,7 @@ class Campaign
 
   def invest(amount)
     raise 'Error: must be a multiple of the investment multiple' unless correct_multiple?(amount)
+    raise 'Error: campaign is now fully funded' if fully_funded?
 
     create_and_store_investment(amount)
   end
@@ -34,5 +35,9 @@ class Campaign
   def create_and_store_investment(amount)
     @total += amount
     @investments << @investment.new(cash_value: amount)
+  end
+
+  def fully_funded?
+    @total == @target_amount
   end
 end
