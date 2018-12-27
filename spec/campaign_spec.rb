@@ -1,12 +1,18 @@
 require 'campaign'
 
 describe Campaign do
-  subject(:campaign) { described_class.new('test_name', 'test_URL', 1000, 'transport', 'United_kingdom', 10) }
+
+  let(:mock_investment) { double :investment, new: nil }
+  subject(:campaign) { described_class.new('test_name', 'test_URL', 1000, 'transport', 'United_kingdom', 10, mock_investment) }
 
   describe '#invest' do
-    it 'adds to the amount invested' do
+    it 'creates a new Investment object' do
+      expect(mock_investment).to receive(:new).with(cash_value: 10)
       campaign.invest(10)
-      expect(campaign.total).to eq 10
+    end 
+
+    it 'adds to the amount invested' do
+      expect { campaign.invest(10) }.to change { campaign.total }.by(10)
     end
 
     it 'only accepts multiples of the investment multiple' do
