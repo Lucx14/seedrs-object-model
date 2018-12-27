@@ -18,6 +18,7 @@ class Campaign
   def invest(amount)
     raise 'Error: must be a multiple of the investment multiple' unless correct_multiple?(amount)
     raise 'Error: campaign is now fully funded' if fully_funded?
+    raise 'Error: amount must be positive' unless positive?(amount)
 
     create_and_store_investment(amount)
   end
@@ -40,4 +41,8 @@ class Campaign
   def fully_funded?
     @total == @target_amount
   end
+
+  def positive?(amount)
+    amount.positive?
+  end 
 end

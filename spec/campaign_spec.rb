@@ -19,6 +19,10 @@ describe Campaign do
       expect { campaign.invest(9) }.to raise_error 'Error: must be a multiple of the investment multiple'
     end
 
+    it 'only accepts positive investments' do
+      expect { campaign.invest(-10) }.to raise_error 'Error: amount must be positive'
+    end 
+
     it 'adds an investment to the investments array' do
       campaign.invest(10)
       expect(campaign.investments.length).to eq 1
